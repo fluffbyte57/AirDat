@@ -1,28 +1,53 @@
 import SwiftUI
 
-
+@Observable
+class AppState{
+    var ShowingRWYhdg = true
+    var ishapticsOn = true
+}
 struct ContentView: View {
+    @Bindable var appState = AppState()
+    
     var body: some View {
         VStack{
             topView()
-            rwyHeadings()
+            ///ScrollView(.vertical){
+                VStack{
+                    if appState.ShowingRWYhdg == true{
+                        rwyHeadings()
+                            .padding(.top)
+                    }
+                }
+            ///}
+            ///.frame(width: 375, height: 200)
         }
     }
 }
 
 struct rwyHeadings: View {
+    
     @State private var compass = compassManager()
+    @Bindable var appState = AppState()
 
     var body: some View {
         VStack{
             HStack{
                 Image(systemName: "safari")
                     .padding(.top)
-                Text("Current Heading: \(compass.mgHeadingFormatted)")
-                    .multilineTextAlignment(.center)
-                    .font(.title2)
-                    .bold()
-                    .padding(.top)
+                if appState.ishapticsOn == true{
+                    Text("Current Heading: \(compass.mgHeadingFormatted)")
+                        .multilineTextAlignment(.center)
+                        .font(.title2)
+                        .bold()
+                        .padding(.top)
+                        .sensoryFeedback(.selection, trigger: compass.mgHeadingFormatted)
+                }else{
+                    Text("Current Heading: \(compass.mgHeadingFormatted)")
+                        .multilineTextAlignment(.center)
+                        .font(.title2)
+                        .bold()
+                        .padding(.top)
+                }
                 Image(systemName: "safari")
                     .padding(.top)
             }
@@ -30,6 +55,7 @@ struct rwyHeadings: View {
             Image("RunwayVectorPNG")
                 .resizable()
                 .frame(width: 300, height: 250)
+                .shadow(radius: 5)
             VStack{
                 Text("Runway number:")
                     .multilineTextAlignment(.center)
@@ -60,7 +86,6 @@ struct topView: View {
                     .dynamicTypeSize(.accessibility1)
                     .padding(.top)
             }
-            
             Text("AirDat")
                 .multilineTextAlignment(.center)
                 .dynamicTypeSize(.accessibility3)
