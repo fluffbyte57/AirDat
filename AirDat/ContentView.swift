@@ -3,12 +3,13 @@ import SwiftUI
 @Observable
 class AppState{
     var ShowingRWYhdg = true
-    var ishapticsOn = true
+    ///var ishapticsOn = true
 }
 
 ///@AppState var isDarkMode = false
 
 struct ContentView: View {
+    @AppStorage("showingTips") var showingTips = true
     @Bindable var appState = AppState()
     
     var body: some View {
@@ -20,6 +21,10 @@ struct ContentView: View {
                         rwyHeadings()
                             .padding(.top)
                     }
+                    if showingTips == true{
+                        tips()
+                            .padding(.top)
+                    }
                 }
             ///}
             ///.frame(width: 375, height: 200)
@@ -27,9 +32,26 @@ struct ContentView: View {
     }
 }
 
+struct tips: View {
+    var body: some View {
+        VStack{
+            Text("Useful tip:")
+                .multilineTextAlignment(.center)
+                .dynamicTypeSize(.accessibility1)
+            Text("Lorem ipsum whatever whatever Lorem ipsum whatever whatever Lorem ipsum whatever whatever Lorem ipsum whatever whatever Lorem ipsum whatever whatever")
+                .multilineTextAlignment(.center)
+                .dynamicTypeSize(.xxLarge)
+        }
+        .background(Color(.secondarySystemGroupedBackground))
+        .frame(width: 320, height: 150)
+        Spacer()
+    }
+}
+
 struct rwyHeadings: View {
     
     @AppStorage("isDarkMode") var isDarkmode = false
+    @AppStorage("isHapticsOn") var isHapticsOn = false
 
     @State private var compass = compassManager()
     @Bindable var appState = AppState()
@@ -39,7 +61,7 @@ struct rwyHeadings: View {
             HStack{
                 Image(systemName: "safari")
                     .padding(.top)
-                if appState.ishapticsOn == true{
+                if isHapticsOn == true{
                     Text("Current Heading: \(compass.mgHeadingFormatted)")
                         .multilineTextAlignment(.center)
                         .font(.title2)
