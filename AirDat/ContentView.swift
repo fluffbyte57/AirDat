@@ -29,6 +29,8 @@ struct ContentView: View {
 
 struct rwyHeadings: View {
     
+    @AppStorage("isDarkMode") var isDarkmode = false
+
     @State private var compass = compassManager()
     @Bindable var appState = AppState()
 
@@ -55,10 +57,19 @@ struct rwyHeadings: View {
                     .padding(.top)
             }
             .padding(.top)
-            Image("RunwayVectorPNG")
-                .resizable()
-                .frame(width: 300, height: 250)
-                .shadow(radius: 5)
+            if isDarkmode == false{
+                Image("RunwayVectorPNG")
+                    .resizable()
+                    .frame(width: 300, height: 250)
+                    .shadow(radius: 5)
+            }else if isDarkmode == true{
+                Image("RunwayVectorPNG")
+                    .resizable()
+                    .frame(width: 300, height: 250)
+                    .shadow(radius: 5)
+                    .colorInvert()
+            }
+            
             VStack{
                 Text("Runway number:")
                     .multilineTextAlignment(.center)
@@ -83,6 +94,8 @@ struct rwyHeadings: View {
 struct topView: View {
     @AppStorage("isDarkMode") var isDarkmode = false
     
+    @State private var showingSettings = false
+
     var body: some View {
         HStack(spacing: 75){
             
@@ -104,10 +117,14 @@ struct topView: View {
                 .dynamicTypeSize(.accessibility3)
                 .padding(.top)
                 .font(.headline)
-            Button(action: {print("SettingsButton")}){
+            Button(action: {showingSettings = true}){
                 Image(systemName: "gearshape.fill")
                     .dynamicTypeSize(.accessibility1)
                     .padding(.top)
+            }
+            .sheet(isPresented: $showingSettings){
+                //settings
+                appSettings()
             }
         }
         .preferredColorScheme(isDarkmode ? .dark : .light)
