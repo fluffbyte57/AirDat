@@ -15,7 +15,7 @@ struct appSettings: View {
 }
 
 struct mainBody: View {
-    @AppStorage("isHapticsOn") var isHapticsOn = false
+    @AppStorage("isHapticsOn") var isHapticsOn = true
     @AppStorage("isTipsOn") var isTipsOn = true
     @AppStorage("isTrueNorthOn") var isTrueNorthOn = false
 

@@ -9,7 +9,7 @@ class AppState{
 ///@AppState var isDarkMode = false
 
 struct ContentView: View {
-    @AppStorage("showingTips") var showingTips = true
+    @AppStorage("isTipsOn") var isTipsOn = true
     @Bindable var appState = AppState()
     
     var body: some View {
@@ -21,9 +21,19 @@ struct ContentView: View {
                         rwyHeadings()
                             .padding(.top)
                     }
-                    if showingTips == true{
+                    if isTipsOn == true{
                         tips()
                             .padding(.top)
+                    }else{
+                        VStack{
+                            VStack{
+                                //justfiller
+                            }
+                        }
+                        .frame(width: 320, height: 240)
+                        //.background(Color(.secondarySystemGroupedBackground))
+                        //.shadow(radius: 15)
+                        Spacer()
                     }
                 }
             ///}
@@ -35,15 +45,21 @@ struct ContentView: View {
 struct tips: View {
     var body: some View {
         VStack{
-            Text("Useful tip:")
-                .multilineTextAlignment(.center)
-                .dynamicTypeSize(.accessibility1)
-            Text("Lorem ipsum whatever whatever Lorem ipsum whatever whatever Lorem ipsum whatever whatever Lorem ipsum whatever whatever Lorem ipsum whatever whatever")
-                .multilineTextAlignment(.center)
-                .dynamicTypeSize(.xxLarge)
+
+            VStack{
+                Text("Useful tip:")
+                    .multilineTextAlignment(.center)
+                    .dynamicTypeSize(.accessibility1)
+                Text("Lorem ipsum whatever whatever Lorem ipsum whatever whatever Lorem ipsum whatever whatever Lorem ipsum whatever whatever Lorem ipsum whatever whatever")
+                    .multilineTextAlignment(.center)
+                    .dynamicTypeSize(.xLarge)
+            }
+            .padding()
+            .background(Color(.secondarySystemBackground))
+            .clipShape(RoundedRectangle(cornerRadius: 15))
+            .frame(width: 320, height: 200)
+            .shadow(radius: 25)
         }
-        .background(Color(.secondarySystemGroupedBackground))
-        .frame(width: 320, height: 150)
         Spacer()
     }
 }
@@ -51,32 +67,40 @@ struct tips: View {
 struct rwyHeadings: View {
     
     @AppStorage("isDarkMode") var isDarkmode = false
-    @AppStorage("isHapticsOn") var isHapticsOn = false
-
+    
+    @AppStorage("isHapticsOn") var isHapticsOn = true
+    @AppStorage("isTrueNorthOn") var isTrueNorthOn = false
+    
     @State private var compass = compassManager()
     @Bindable var appState = AppState()
 
     var body: some View {
         VStack{
-            HStack{
-                Image(systemName: "safari")
-                    .padding(.top)
+            VStack{
+                ///Image(systemName: "safari")
+                ///    .padding(.top)
                 if isHapticsOn == true{
-                    Text("Current Heading: \(compass.mgHeadingFormatted)")
+                    Text("Magnetic Heading: \(compass.mgHeadingFormatted)")
                         .multilineTextAlignment(.center)
                         .font(.title2)
                         .bold()
                         .padding(.top)
                         .sensoryFeedback(.selection, trigger: compass.mgHeadingFormatted)
                 }else{
-                    Text("Current Heading: \(compass.mgHeadingFormatted)")
+                    Text("Magnetic Heading: \(compass.mgHeadingFormatted)")
                         .multilineTextAlignment(.center)
                         .font(.title2)
                         .bold()
                         .padding(.top)
                 }
-                Image(systemName: "safari")
-                    .padding(.top)
+                if isTrueNorthOn == true{
+                    Text("True Heading: \(compass.trueHeading)")
+                        .multilineTextAlignment(.center)
+                        .font(.title2)
+                        .bold()
+                }
+                ///Image(systemName: "safari")
+                ///    .padding(.top)
             }
             .padding(.top)
             if isDarkmode == false{
@@ -91,7 +115,6 @@ struct rwyHeadings: View {
                     .shadow(radius: 5)
                     .colorInvert()
             }
-            
             VStack{
                 Text("Runway number:")
                     .multilineTextAlignment(.center)
@@ -105,11 +128,10 @@ struct rwyHeadings: View {
             }
         }
         .padding()
-        .frame(width: 350, height: 400)
+        .frame(width: 350, height: 450)
         .background(Color(.secondarySystemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 15))
         .shadow(radius: 15)
-        Spacer()
     }
 }
 
@@ -149,6 +171,7 @@ struct topView: View {
                 appSettings()
             }
         }
+        .padding(.top)
         .preferredColorScheme(isDarkmode ? .dark : .light)
     }
 }
