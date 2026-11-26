@@ -5,6 +5,9 @@ class AppState{
     var ShowingRWYhdg = true
     var ishapticsOn = true
 }
+
+///@AppState var isDarkMode = false
+
 struct ContentView: View {
     @Bindable var appState = AppState()
     
@@ -78,10 +81,20 @@ struct rwyHeadings: View {
 }
 
 struct topView: View {
+    @AppStorage("isDarkMode") var isDarkmode = false
+    
     var body: some View {
         HStack(spacing: 75){
             
-            Button(action: {print("HelloWorld")}){
+            Button(action: {if isDarkmode == true{
+                isDarkmode = false
+                print(isDarkmode)
+            }else if isDarkmode == false{
+                isDarkmode = true
+                print(isDarkmode)
+            }
+        }
+                ){
                 Image(systemName: "moon.fill")
                     .dynamicTypeSize(.accessibility1)
                     .padding(.top)
@@ -97,6 +110,7 @@ struct topView: View {
                     .padding(.top)
             }
         }
+        .preferredColorScheme(isDarkmode ? .dark : .light)
     }
 }
 
