@@ -11,7 +11,7 @@ import SwiftUI
 struct mainTabs: View {
     var body: some View {
         TabView{
-            Tab("Runways", systemImage: "airplane"){
+            Tab("Runways", systemImage: "road.lanes"){
                 ContentView()
             }
             Tab("Settings", systemImage: "gearshape"){

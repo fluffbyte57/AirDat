@@ -143,33 +143,21 @@ struct topView: View {
     var body: some View {
         HStack(spacing: 75){
             
-            Button(action: {if isDarkmode == true{
-                isDarkmode = false
-                print(isDarkmode)
-            }else if isDarkmode == false{
-                isDarkmode = true
-                print(isDarkmode)
-            }
-        }
-                ){
-                Image(systemName: "moon.fill")
-                    .dynamicTypeSize(.accessibility1)
-                    .padding(.top)
-            }
+            
             Text("AirDat")
                 .multilineTextAlignment(.center)
-                .dynamicTypeSize(.accessibility3)
+                .dynamicTypeSize(.accessibility4)
                 .padding(.top)
                 .font(.headline)
-            Button(action: {showingSettings = true}){
-                Image(systemName: "gearshape.fill")
-                    .dynamicTypeSize(.accessibility1)
-                    .padding(.top)
-            }
-            .sheet(isPresented: $showingSettings){
-                //settings
-                appSettings()
-            }
+            ///Button(action: {showingSettings = true}){
+               /// Image(systemName: "gearshape.fill")
+               ///     .dynamicTypeSize(.accessibility1)
+               ///     .padding(.top)
+            ///}
+            ///.sheet(isPresented: $showingSettings){
+            ///    //settings
+            ///    appSettings()
+            ///}
         }
         .padding(.top)
         .preferredColorScheme(isDarkmode ? .dark : .light)
